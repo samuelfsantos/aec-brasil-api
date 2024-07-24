@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+
+  api:
+    image: registry.digitalocean.com/dcr-samuel/aec-brasil-api:${TAG}
+    container_name: aec-brasil-api
+    build: 
+      context: Aec.Brasil
+      dockerfile: ./Aec.Brasil.Api/Dockerfile
+      args:
+        - TAG=${TAG}
+    ports:
+      - "5020:5020"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:5020
+    depends_on:
+      - db
+    command: bash -c "dotnet ef database update && dotnet Aec.Brasil.Api.dll"      
+      
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: aec-brasil-db
+    environment:
+      SA_PASSWORD: "YourStrong@Passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "5022:1433"
+    volumes:
+      - sqlvolume:/var/opt/mssql
+      
+volumes:
+  sqlvolume:

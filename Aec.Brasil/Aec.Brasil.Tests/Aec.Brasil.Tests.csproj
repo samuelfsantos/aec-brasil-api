@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <IsPackable>false</IsPackable>
+        <ProjectGuid>{37d01a56-820a-4a24-ad7f-1fe201d9f303}</ProjectGuid>
+    </PropertyGroup>
+
+    <ItemGroup>
+		<PackageReference Include="MediatR" Version="12.2.0" />
+		<PackageReference Include="MediatR.Extensions.Autofac.DependencyInjection" Version="11.3.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+        <PackageReference Include="xunit" Version="2.6.5" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.5.6">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="coverlet.collector" Version="6.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Aec.Brasil.Application\Aec.Brasil.Application.csproj" />
+        <ProjectReference Include="..\Aec.Brasil.Data\Aec.Brasil.Data.csproj" />
+        <ProjectReference Include="..\Aec.Brasil.Domain\Aec.Brasil.Domain.csproj" />
+    </ItemGroup>
+</Project>

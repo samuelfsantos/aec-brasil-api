@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ProjectGuid>{11a9435c-b08c-4cf8-b024-4491d76392f4}</ProjectGuid>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="7.1.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="MediatR.Extensions.Autofac.DependencyInjection" Version="11.3.0" />
+    <PackageReference Include="MediatR" Version="12.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Aec.Brasil.Application\Aec.Brasil.Application.csproj" />
+    <ProjectReference Include="..\Aec.Brasil.Data\Aec.Brasil.Data.csproj" />
+    <ProjectReference Include="..\Aec.Brasil.Domain\Aec.Brasil.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
