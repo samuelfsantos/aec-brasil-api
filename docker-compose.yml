@@ -1,7 +1,6 @@
 version: "3"
 
 services:
-
   api:
     image: registry.digitalocean.com/dcr-samuel/aec-brasil-api:${TAG}
     container_name: aec-brasil-api
@@ -19,17 +18,20 @@ services:
     depends_on:
       - db
     command: bash -c "dotnet ef database update && dotnet Aec.Brasil.Api.dll"      
-      
+
   db:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: aec-brasil-db
     environment:
-      SA_PASSWORD: "YourStrong@Passw0rd"
-      ACCEPT_EULA: "Y"
+      - SA_PASSWORD=YourStrong@Passw0rd
+      - ACCEPT_EULA=Y
     ports:
       - "5022:1433"
     volumes:
       - sqlvolume:/var/opt/mssql
       
+networks:
+  aec-brasil-network:
+
 volumes:
   sqlvolume:

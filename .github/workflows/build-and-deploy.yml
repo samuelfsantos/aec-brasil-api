@@ -1,20 +1,17 @@
 name: CI_CD_PRD
 
 # 1
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push events but only for the master branch
   push:
     branches: [main]
   pull_request:
     branches: [main]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
       version:
         description: 'Image version'
         required: true
+
 #2
 env:
   REGISTRY: "registry.digitalocean.com/dcr-samuel"
@@ -38,23 +35,17 @@ jobs:
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
         run: doctl registry login --expiry-seconds 600
       
-      # #- name: Remove all old images from other repositories
-      # #  run: if [ ! -z "$(doctl registry repository list | grep "$(echo $IMAGE_NAME_API)")" ]; then doctl registry repository delete-manifest $(echo $IMAGE_NAME_API) $(doctl registry repository list-tags $(echo $IMAGE_NAME_API) | grep -o "sha.*") --force; else echo "No repository"; fi
-
       - name: Set TAG environment variable
         run: echo TAG=$(echo $GITHUB_SHA | head -c7) >> $GITHUB_ENV
 
-      - name: Build Docker Image
-        env:
-          TAG: ${{ env.TAG }}
+      - name: Build Docker Images
         run: |
-          docker-compose -f docker-compose.yml build --no-cache --build-arg TAG=$TAG
+          docker-compose -f docker-compose.yml build --no-cache
           docker image ls
 
-      - name: Push Docker Image
+      - name: Push Docker Images
         run: docker-compose -f docker-compose.yml push
                   
-            
   deploy:
     runs-on: ubuntu-latest
     needs: build_and_push
@@ -69,31 +60,28 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           envs:
             IMAGE_NAME_API, IMAGE_NAME_DB,
-            REGISTRY, {{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}, GITHUB_SHA
+            REGISTRY, GITHUB_SHA
           script: |
             # Login to registry
             docker login -u ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} -p ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} registry.digitalocean.com
             
-            echo "Arquivos e diretórios no servidor remoto:"
-            ls -al
-
             # Stop old containers
-            #docker stop $(echo $IMAGE_NAME_API)
-            #docker stop $(echo $IMAGE_NAME_DB)
+            docker stop $IMAGE_NAME_API || true
+            docker stop $IMAGE_NAME_DB || true
             
             # Remove old containers
-            #docker rm $(echo $IMAGE_NAME_API)
-            #docker rm $(echo $IMAGE_NAME_DB)
+            docker rm $IMAGE_NAME_API || true
+            docker rm $IMAGE_NAME_DB || true
             
             # Run new containers
-            docker run -dt -p 5020:8080 \
-            --restart always \
-            --name $(echo $IMAGE_NAME_API) \
-            --network $(echo $NETWORK_NAME) \
-            $(echo $REGISTRY)/$(echo $IMAGE_NAME_API):$(echo $GITHUB_SHA | head -c7)
+            docker run -dt -p 5020:5020 \
+              --restart always \
+              --name $IMAGE_NAME_API \
+              --network aec-brasil-network \
+              $REGISTRY/$IMAGE_NAME_API:${{ env.TAG }}
             
             docker run -dt -p 5022:1433 \
-            --restart always \
-            --name $(echo $IMAGE_NAME_DB) \
-            $(echo $REGISTRY)/$(echo $IMAGE_NAME_DB):latest
-
+              --restart always \
+              --name $IMAGE_NAME_DB \
+              --network aec-brasil-network \
+              $REGISTRY/$IMAGE_NAME_DB:latest
