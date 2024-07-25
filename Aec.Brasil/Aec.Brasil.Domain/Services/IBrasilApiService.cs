@@ -5,5 +5,6 @@ namespace Aec.Brasil.Domain.Services
     public interface IBrasilApiService
     {
         Cidade ObterCidadePorId(int id);
+        Aeroporto ObterAeroportoPorCodigo(string codigo);
     }
 }

@@ -18,6 +18,8 @@ namespace Aec.Brasil.Data.MappingConfig
             entity.Property(e => e.Estado).IsRequired().HasMaxLength(2).IsUnicode(false);
             entity.Property(e => e.AtualizadoEm).IsRequired();
 
+            entity.HasIndex(e => e.IdIntegracao).HasName("IDX_Cidade_IdIntegracao");
+
             entity.ToTable("Cidade", "AecBrasil");
         }
     }

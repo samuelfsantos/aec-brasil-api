@@ -10,6 +10,7 @@ namespace Aec.Brasil.Data
 
         public virtual DbSet<Clima> Clima { get; set; }
         public virtual DbSet<Cidade> Cidade { get; set; }
+        public virtual DbSet<Aeroporto> Aeroporto { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -17,6 +18,7 @@ namespace Aec.Brasil.Data
 
             modelBuilder.ApplyConfiguration(new CidadeConfiguration());
             modelBuilder.ApplyConfiguration(new ClimaConfiguration());
+            modelBuilder.ApplyConfiguration(new AeroportoConfiguration());
 
             OnModelCreatingPartial(modelBuilder);
         }
