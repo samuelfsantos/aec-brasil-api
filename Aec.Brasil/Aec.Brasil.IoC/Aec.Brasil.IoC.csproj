@@ -16,6 +16,7 @@
     <ProjectReference Include="..\Aec.Brasil.Application\Aec.Brasil.Application.csproj" />
     <ProjectReference Include="..\Aec.Brasil.Data\Aec.Brasil.Data.csproj" />
     <ProjectReference Include="..\Aec.Brasil.Domain\Aec.Brasil.Domain.csproj" />
+    <ProjectReference Include="..\Aec.Brasil.Services\Aec.Brasil.Services.csproj" />
   </ItemGroup>
 
 </Project>

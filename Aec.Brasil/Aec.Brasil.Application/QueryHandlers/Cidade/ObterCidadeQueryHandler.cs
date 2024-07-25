@@ -31,7 +31,9 @@ namespace Aec.Brasil.Application.QueryHandlers.Cidade
 
         public Task<List<CidadeDto>> Handle(CidadeQuery request, CancellationToken cancellationToken)
         {
-            var cidades = _cidadeRepository.ObterPorIdIntegracaoComClimas(request.IdIntegracao);
+            var cidades = request.IdIntegracao.HasValue
+                            ? _cidadeRepository.ObterPorIdIntegracaoComClimas(request.IdIntegracao.Value)
+                            : _cidadeRepository.ObterComClimas();
 
             cidades = OrdenarResultado(cidades);
             var result = _mapper.Map<List<CidadeDto>>(cidades.ToList());
@@ -41,7 +43,9 @@ namespace Aec.Brasil.Application.QueryHandlers.Cidade
 
         private IQueryable<Domain.Entities.Cidade> OrdenarResultado(IQueryable<Domain.Entities.Cidade> result)
         {
-            return result.OrderByDescending(x => x.CriadoEm).ThenByDescending(x => x.AtualizadoEm);
+            return result
+                .OrderByDescending(x => x.CriadoEm)
+                .ThenByDescending(x => x.AtualizadoEm);
         }
 
     }

@@ -20,16 +20,6 @@ namespace Aec.Brasil.Api.StartupExtensions
             {
                 c.OperationFilter<SwaggerDefaultValues>();
 
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Description = "Insira o token JWT desta maneira: Bearer {seu token}",
-                    Name = "Authorization",
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey
-                });
-
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
@@ -51,7 +41,6 @@ namespace Aec.Brasil.Api.StartupExtensions
 
         public static IApplicationBuilder UseSwagger(this IApplicationBuilder app, IApiVersionDescriptionProvider provider)
         {
-            //app.UseMiddleware<SwaggerAuthorizedMiddleware>();
             app.UseSwagger();
             app.UseSwaggerUI(
                 options =>
@@ -83,9 +72,9 @@ namespace Aec.Brasil.Api.StartupExtensions
         {
             var info = new OpenApiInfo()
             {
-                Title = "API - Oficina Tech",
+                Title = "API - AeC",
                 Version = description.ApiVersion.ToString(),
-                Description = "API do Aplicativo e Site Web Oficina Tech.",
+                Description = "API do processo seletivo AeC",
                 Contact = new OpenApiContact() { Name = "Samuel", Email = "contato@gmail.com" },
                 License = new OpenApiLicense() { Name = "MIT", Url = new Uri("https://opensource.org/licenses/MIT") }
             };
@@ -149,13 +138,6 @@ namespace Aec.Brasil.Api.StartupExtensions
 
         public async Task Invoke(HttpContext context)
         {
-            if (context.Request.Path.StartsWithSegments("/swagger")
-                && !context.User.Identity.IsAuthenticated)
-            {
-                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                return;
-            }
-
             await _next.Invoke(context);
         }
     }

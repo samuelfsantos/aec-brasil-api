@@ -6,6 +6,6 @@ namespace Aec.Brasil.Application.Queries.Cidade
 {
     public class CidadeQuery : IRequest<List<CidadeDto>>
     {
-        public int IdIntegracao { get; set; }
+        public int? IdIntegracao { get; set; }
     }
 }

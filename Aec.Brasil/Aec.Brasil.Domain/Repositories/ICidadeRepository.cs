@@ -6,6 +6,7 @@ namespace Aec.Brasil.Domain.Repositories
 {
     public interface ICidadeRepository
     {
+        IQueryable<Cidade> ObterComClimas();
         IQueryable<Cidade> ObterPorIdIntegracaoComClimas(int idIntegracao);
         Cidade ObterPorIdComClimas(Guid id);
     }

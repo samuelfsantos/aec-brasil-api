@@ -24,6 +24,8 @@ builder.Services.AddSwagger();
 
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddBrasilApiServiceConfig(builder.Configuration);
+
 
 
 

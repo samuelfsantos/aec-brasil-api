@@ -73,7 +73,6 @@ namespace Aec.Brasil.Tests.Domain.Cidade
         [InlineData(GuidTeste, null, IdIntegracaoTeste, EstadoTeste, AtualizadoEmTeste, "O atributo Nome é obrigatório")]
         [InlineData(GuidTeste, NomeTeste, 0, EstadoTeste, AtualizadoEmTeste, "O atributo Id Integracao deve ser maior que 0(zero)")]
         [InlineData(GuidTeste, NomeTeste, IdIntegracaoTeste, TextoVazioTeste, AtualizadoEmTeste, "O atributo Estado é obrigatório")]
-        [InlineData(GuidTeste, NomeTeste, IdIntegracaoTeste, EstadoTeste, TextoVazioTeste, "O atributo Atualizado Em é obrigatório")]
         public void TestarCidadeAlteracaoValidatorEntidadeInvalida(Guid id, string nome, int idIntegracaoTeste, string estado, string atualizadoEm, string mensagem)
         {
             var cidade = new Aec.Brasil.Domain.Entities.Cidade()

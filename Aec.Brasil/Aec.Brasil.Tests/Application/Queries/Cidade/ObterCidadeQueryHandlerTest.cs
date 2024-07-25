@@ -17,9 +17,17 @@ namespace Aec.Brasil.Tests.Application.Queries.Cidade
         }
 
         [Fact]
-        public void ObtemCidadeExistente()
+        public void ObtemCidadeExistentePorIdIntegracao()
         {
             var results = _mediator.Send(new CidadeQuery() { IdIntegracao = 1 });
+
+            Assert.True(results.Result != null && results.Result.Count > 0);
+        }
+
+        [Fact]
+        public void ObtemCidadeExistente()
+        {
+            var results = _mediator.Send(new CidadeQuery() { });
 
             Assert.True(results.Result != null && results.Result.Count > 0);
         }

@@ -79,11 +79,11 @@ jobs:
 
             # Stop old containers
             docker stop $(echo $IMAGE_NAME_API)
-            docker stop $(echo $IMAGE_NAME_DB)
+            #docker stop $(echo $IMAGE_NAME_DB)
             
             # Remove old containers
             docker rm $(echo $IMAGE_NAME_API)
-            docker rm $(echo $IMAGE_NAME_DB)
+            #docker rm $(echo $IMAGE_NAME_DB)
             
             # Run new containers
             docker run -dt -p 5020:8080 \

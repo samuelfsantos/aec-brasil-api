@@ -5,6 +5,9 @@ using Aec.Brasil.Domain.Common;
 using Aec.Brasil.Domain.Common.Notification;
 using Aec.Brasil.Domain.Validators.Cidade;
 using System.Reflection;
+using Aec.Brasil.Domain.Services;
+using Autofac.Core;
+using Aec.Brasil.Services.BrasilApi;
 
 namespace Aec.Brasil.IoC
 {
@@ -25,6 +28,8 @@ namespace Aec.Brasil.IoC
                        .AsImplementedInterfaces();
 
             builder.RegisterType<NotificationDomain>().As<INotificationDomain<NotificationDomainMessage>>().InstancePerLifetimeScope();
+
+            builder.RegisterType<BrasilApiService>().As<IBrasilApiService>().InstancePerLifetimeScope();
         }
     }
 }

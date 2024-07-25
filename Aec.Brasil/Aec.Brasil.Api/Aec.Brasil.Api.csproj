@@ -16,6 +16,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 	<PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="MediatR.Extensions.Autofac.DependencyInjection" Version="11.3.0" />
@@ -28,6 +29,7 @@
     <ProjectReference Include="..\Aec.Brasil.Data\Aec.Brasil.Data.csproj" />
     <ProjectReference Include="..\Aec.Brasil.Domain\Aec.Brasil.Domain.csproj" />
     <ProjectReference Include="..\Aec.Brasil.IoC\Aec.Brasil.IoC.csproj" />
+    <ProjectReference Include="..\Aec.Brasil.Services\Aec.Brasil.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

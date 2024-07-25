@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aec.Brasil.Tests", "Aec.Bra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aec.Brasil.IoC", "Aec.Brasil.IoC\Aec.Brasil.IoC.csproj", "{11A9435C-B08C-4CF8-B024-4491D76392F4}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aec.Brasil.Services", "Aec.Brasil.Services\Aec.Brasil.Services.csproj", "{DD531365-D14E-4D43-9DFE-42AF8F78E1C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{11A9435C-B08C-4CF8-B024-4491D76392F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11A9435C-B08C-4CF8-B024-4491D76392F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11A9435C-B08C-4CF8-B024-4491D76392F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD531365-D14E-4D43-9DFE-42AF8F78E1C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD531365-D14E-4D43-9DFE-42AF8F78E1C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD531365-D14E-4D43-9DFE-42AF8F78E1C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD531365-D14E-4D43-9DFE-42AF8F78E1C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +72,7 @@ Global
 		{95BA9AFF-E9A7-4E34-800B-A44F2FFD5453} = {C4AF6344-4004-46FF-83F9-294524D449CC}
 		{37D01A56-820A-4A24-AD7F-1FE201D9F303} = {10C92A83-9BC7-4A70-ADA4-B74F2B9800D8}
 		{11A9435C-B08C-4CF8-B024-4491D76392F4} = {61EB6539-05AC-4283-8D9B-9A5E42816A19}
+		{DD531365-D14E-4D43-9DFE-42AF8F78E1C4} = {61EB6539-05AC-4283-8D9B-9A5E42816A19}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {855A3744-A797-488E-9F2F-1016090011E8}

@@ -12,7 +12,7 @@ namespace Aec.Brasil.Domain.Validators.Clima
             RuleFor(a => a.AlteradoEm).NotEqual(new DateTime()).WithMessage("O atributo {PropertyName} é obrigatório");
             RuleFor(a => a.AlteradoPor).NotEmpty().WithMessage("O atributo {PropertyName} é obrigatório");
 
-            RuleFor(a => a.Id).NotEmpty().WithMessage("O atributo {PropertyName} é obrigatório");
+            RuleFor(a => a.Id).NotEqual(Guid.Empty).WithMessage("O atributo {PropertyName} é obrigatório");
             RuleFor(a => a.Data).NotEmpty().WithMessage("O atributo {PropertyName} é obrigatório");
             RuleFor(a => a.Data).NotEqual(new DateTime()).WithMessage("O atributo {PropertyName} é obrigatório");
             RuleFor(a => a.Condicao).NotEmpty().WithMessage("O atributo {PropertyName} é obrigatório");

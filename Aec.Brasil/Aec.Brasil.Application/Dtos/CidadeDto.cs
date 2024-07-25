@@ -5,6 +5,7 @@ namespace Aec.Brasil.Application.Dtos
 {
     public class CidadeDto
     {
+        public Guid Id { get; set; }
         public int IdIntegracao { get; set; }
         public string Nome { get; set; }
         public string Estado { get; set; }

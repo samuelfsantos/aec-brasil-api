@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Aec.Brasil.Api.Configurations;
+using System.Text.Json.Serialization;
 
 namespace Aec.Brasil.Api.StartupExtensions
 {
@@ -66,8 +67,6 @@ namespace Aec.Brasil.Api.StartupExtensions
             {
                 endpoints.MapControllers();
             });
-
-            //app.MapControllers();
 
             return app;
         }

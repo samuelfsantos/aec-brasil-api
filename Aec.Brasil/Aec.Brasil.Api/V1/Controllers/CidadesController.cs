@@ -1,19 +1,14 @@
-﻿using MediatR;
+﻿using Aec.Brasil.Api.Controllers;
+using Aec.Brasil.Application.Commands.Cidade;
+using Aec.Brasil.Application.Queries.Cidade;
+using Aec.Brasil.Domain.Common.Notification;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Aec.Brasil.Api.Controllers;
-using Aec.Brasil.Api.Configurations;
-using Aec.Brasil.Application.Commands.Cidade;
-using Aec.Brasil.Application.Queries.Cidade;
-using Aec.Brasil.Domain.Common;
-using Aec.Brasil.Domain.Common.Notification;
 using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Caching.Distributed;
-using Aec.Brasil.Application.Dtos;
-using System.Collections.Generic;
 
 namespace Aec.Brasil.Api.V1.Controllers
 {
@@ -24,19 +19,18 @@ namespace Aec.Brasil.Api.V1.Controllers
         public CidadesController(
             ILogger<CidadesController> logger,
             INotificationDomain<NotificationDomainMessage> notifications,
-            IMediator mediator,            
-            IDistributedCache cache) : base(logger, notifications, mediator)
+            IMediator mediator) : base(logger, notifications, mediator)
         {
         }
 
-        [HttpGet("id-integracao/{idIntegracao}")]
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetByIdIntegracao(int idIntegracao)
+        public async Task<IActionResult> Get()
         {
             if (!IsSuccess) return CustomResponse();
 
-            var results = await _mediator.Send(new CidadeQuery() { IdIntegracao = idIntegracao });
+            var results = await _mediator.Send(new CidadeQuery() { });
 
             return CustomResponse(results);
         }
@@ -81,6 +75,28 @@ namespace Aec.Brasil.Api.V1.Controllers
             await _mediator.Send(command);
 
             return CustomResponse();
+        }
+
+        [HttpGet("{idIntegracao:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetByIdIntegracao(int idIntegracao)
+        {
+            if (!IsSuccess) return CustomResponse();
+
+            var results = await _mediator.Send(new CidadeQuery() { IdIntegracao = idIntegracao });
+
+            return CustomResponse(results);
+        }
+
+        [HttpPost("integracao/id-integracao")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> PostIntegracaoById([FromBody] ExecutarIntegracaoCidadePorIdCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            return CustomResponse(new { IdCidade = result });
         }
     }
 }

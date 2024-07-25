@@ -24,6 +24,14 @@ namespace Aec.Brasil.Data.Repositories
             return query;
         }
 
+        public IQueryable<Cidade> ObterComClimas()
+        {
+            var query = _context.Cidade.AsNoTracking()
+                            .Include(x => x.Climas);
+
+            return query;
+        }
+
         public Cidade ObterPorIdComClimas(Guid id)
         {
             var query = _context.Cidade.AsNoTracking()
