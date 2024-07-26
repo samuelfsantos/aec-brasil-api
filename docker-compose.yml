@@ -14,7 +14,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://*:5020
-      - ConnectionStrings__DefaultConnection="Server=aec-brasil-db,5022;Database=AecBrasil;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True;"
+      - ConnectionStrings__DefaultConnection="Server=db-aec,5022;Database=AecBrasil;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True;"
     depends_on:
       - db-aec
     command: bash -c "dotnet ef database update && dotnet Aec.Brasil.Api.dll"    
