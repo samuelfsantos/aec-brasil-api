@@ -1,22 +1,30 @@
 name: CI_CD_PRD
 
 # 1
+# Controls when the workflow will run
 on:
+  # Triggers the workflow on push events but only for the master branch
   push:
     branches: [main]
   pull_request:
     branches: [main]
+
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
       version:
         description: 'Image version'
         required: true
-
 #2
 env:
-  REGISTRY: "registry.digitalocean.com/dcr-samuel"
-  IMAGE_NAME_API: "aec-brasil-api"
-  IMAGE_NAME_DB: "aec-brasil-db"
+  REGISTRY: "registry.digitalocean.com/dcr-samuel"  
+  IMAGE_NAME_DB: "mcr.microsoft.com/mssql/server:2019-latest"
+  CONTAINER_NAME_DB: "aec-brasil-db"
+  CONTAINER_NAME_API: "aec-brasil-api"
+  NETWORK_NAME: "rede-aec"
+  DB_USER: "sa"
+  DB_PASSWORD: "YourStrong@Passw0rd"
+  DB_NAME: "AecBrasil"
 
 #3
 jobs:
@@ -38,14 +46,17 @@ jobs:
       - name: Set TAG environment variable
         run: echo TAG=$(echo $GITHUB_SHA | head -c7) >> $GITHUB_ENV
 
-      - name: Build Docker Images
+      - name: Build Docker Image
+        env:
+          TAG: ${{ env.TAG }}
         run: |
-          docker-compose -f docker-compose.yml build --no-cache
+          docker-compose -f docker-compose.yml build --no-cache --build-arg TAG=$TAG
           docker image ls
 
-      - name: Push Docker Images
+      - name: Push Docker Image
         run: docker-compose -f docker-compose.yml push
                   
+            
   deploy:
     runs-on: ubuntu-latest
     needs: build_and_push
@@ -59,29 +70,46 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           envs:
-            IMAGE_NAME_API, IMAGE_NAME_DB,
-            REGISTRY, GITHUB_SHA
+            IMAGE_NAME_DB, CONTAINER_NAME_DB, CONTAINER_NAME_API, NETWORK_NAME,
+            REGISTRY, {{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}, GITHUB_SHA,
+            DB_USER, DB_PASSWORD, DB_NAME
           script: |
             # Login to registry
             docker login -u ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} -p ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} registry.digitalocean.com
             
+            echo "Arquivos e diretórios no servidor remoto:"
+            ls -al
+
             # Stop old containers
-            docker stop $IMAGE_NAME_API || true
-            docker stop $IMAGE_NAME_DB || true
+            #docker stop $(echo $CONTAINER_NAME_API)
+            #docker stop $(echo $CONTAINER_NAME_DB)
             
             # Remove old containers
-            docker rm $IMAGE_NAME_API || true
-            docker rm $IMAGE_NAME_DB || true
+            #docker rm $(echo $CONTAINER_NAME_API)
+            #docker rm $(echo $CONTAINER_NAME_DB)
+            
+            # Network recreation
+            #docker network rm $(echo $NETWORK_NAME)
+            docker network create $(echo $NETWORK_NAME)
             
             # Run new containers
-            docker run -dt -p 5020:5020 \
-              --restart always \
-              --name $IMAGE_NAME_API \
-              --network aec-brasil-network \
-              $REGISTRY/$IMAGE_NAME_API:${{ env.TAG }}
+            docker run -dt -p 5020:8080 \
+            --restart always \
+            --name $(echo $CONTAINER_NAME_API) \
+            --network $(echo $NETWORK_NAME) \
+            $(echo $REGISTRY)/$(echo $CONTAINER_NAME_API):$(echo $GITHUB_SHA | head -c7)
             
             docker run -dt -p 5022:1433 \
-              --restart always \
-              --name $IMAGE_NAME_DB \
-              --network aec-brasil-network \
-              $REGISTRY/$IMAGE_NAME_DB:latest
+            --restart always \
+            --name $(echo $CONTAINER_NAME_DB) \
+            --network $(echo $NETWORK_NAME) \
+            -e "SA_PASSWORD=$DB_PASSWORD" \
+            -e "ACCEPT_EULA=Y" \
+            $(echo $IMAGE_NAME_DB)
+            
+            # Wait for the SQL Server to start
+            sleep 30
+            
+            # Create database
+            docker exec -i $CONTAINER_NAME_DB /opt/mssql-tools/bin/sqlcmd -S localhost -U $DB_USER -P $DB_PASSWORD -Q "CREATE DATABASE [$DB_NAME];"
+

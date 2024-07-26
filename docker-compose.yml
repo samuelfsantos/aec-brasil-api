@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  api:
+  api-aec:
     image: registry.digitalocean.com/dcr-samuel/aec-brasil-api:${TAG}
     container_name: aec-brasil-api
     build: 
@@ -14,12 +14,14 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://*:5020
-      - ConnectionStrings__DefaultConnection="Server=db;Database=AecBrasil;User Id=sa;Password=YourStrong@Passw0rd;"
+      #- ConnectionStrings__DefaultConnection="Server=db;Database=AecBrasil;User Id=sa;Password=YourStrong@Passw0rd;"
     depends_on:
-      - db
-    command: bash -c "dotnet ef database update && dotnet Aec.Brasil.Api.dll"      
+      - db-aec
+    command: bash -c "dotnet ef database update && dotnet Aec.Brasil.Api.dll"    
+    networks:
+      - rede-aec    
 
-  db:
+  db-aec:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: aec-brasil-db
     environment:
@@ -31,7 +33,6 @@ services:
       - sqlvolume:/var/opt/mssql
       
 networks:
-  aec-brasil-network:
-
-volumes:
-  sqlvolume:
+  rede-aec:
+    driver: bridge
+  
