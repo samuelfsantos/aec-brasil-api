@@ -1,4 +1,5 @@
 ﻿using Aec.Brasil.Api.Controllers;
+using Aec.Brasil.Application.Commands.Aeroporto;
 using Aec.Brasil.Application.Queries.Cidade;
 using Aec.Brasil.Domain.Common.Notification;
 using MediatR;
@@ -35,6 +36,12 @@ namespace Aec.Brasil.Api.V1.Controllers
             });
         }
 
-
+        [HttpPost("erro")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Post([FromBody] string mensagem)
+        {
+            throw new System.Exception(mensagem);
+        }
     }
 }

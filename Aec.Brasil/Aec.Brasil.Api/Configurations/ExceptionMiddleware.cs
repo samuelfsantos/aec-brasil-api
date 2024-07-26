@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using Aec.Brasil.Data;
+using Aec.Brasil.Domain.Common;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Aec.Brasil.Api.Configurations
 {
@@ -22,30 +25,42 @@ namespace Aec.Brasil.Api.Configurations
             }
             catch (Exception ex)
             {
-                HandleExceptionAsync(httpContext, ex);
+                await HandleExceptionAsync(httpContext, ex);
             }
         }
 
-        //private static void HandleExceptionAsync(HttpContext context, Exception exception)
+        //private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         //{
         //    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        //    context.Response.ContentType = "application/json";
+
+        //    var errorResponse = new
+        //    {
+        //        Message = "An unexpected error occurred.",
+        //        Detail = exception.Message,
+        //        StackTrace = exception.StackTrace
+        //    };
+
+        //    var errorJson = System.Text.Json.JsonSerializer.Serialize(errorResponse);
+
+        //    await context.Response.WriteAsync(errorJson);
         //}
 
         private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            context.Response.ContentType = "application/json";
 
-            var errorResponse = new
+            var dbContext = context.RequestServices.GetRequiredService<AecBrasilContext>();
+            var logErro = new Domain.Entities.LogErro("usuario.generico")
             {
+                Id = Guid.NewGuid(),
                 Message = "An unexpected error occurred.",
                 Detail = exception.Message,
-                StackTrace = exception.StackTrace
+                StackTrace = exception.StackTrace,
+                Timestamp = DateTime.UtcNow
             };
-
-            var errorJson = System.Text.Json.JsonSerializer.Serialize(errorResponse);
-
-            await context.Response.WriteAsync(errorJson);
+            dbContext.LogErro.Add(logErro);
+            await dbContext.SaveChangesAsync();
         }
     }
 }
