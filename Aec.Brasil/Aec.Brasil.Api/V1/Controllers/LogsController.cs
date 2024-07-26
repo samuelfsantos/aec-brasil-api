@@ -1,7 +1,6 @@
 ﻿using Aec.Brasil.Api.Controllers;
-using Aec.Brasil.Application.Commands.Aeroporto;
-using Aec.Brasil.Application.Queries.Cidade;
 using Aec.Brasil.Domain.Common.Notification;
+using Aec.Brasil.Domain.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +14,16 @@ namespace Aec.Brasil.Api.V1.Controllers
     [Route("api/v{version:apiVersion}/logs")]
     public class LogsController : ControllerBaseCustom
     {
+        private readonly ILogErroRepository _logErroRepository;
         private readonly IConfiguration _configuration;
         public LogsController(
             ILogger<LogsController> logger,
             INotificationDomain<NotificationDomainMessage> notifications,
             IMediator mediator,
+            ILogErroRepository logErroRepository,
             IConfiguration configuration) : base(logger, notifications, mediator)
         {
+            _logErroRepository = logErroRepository;
             _configuration = configuration;
         }
 
@@ -30,17 +32,19 @@ namespace Aec.Brasil.Api.V1.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get()
         {
-            return Ok(new
-            {
-                DefaultConnection = _configuration["ConnectionStrings:DefaultConnection"]
-            });
+            var logs = _logErroRepository.Obter();
+
+            return Ok(logs);
         }
 
-        [HttpPost("erro")]
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post([FromBody] string mensagem)
         {
+            mensagem = string.IsNullOrWhiteSpace(mensagem) ? string.Empty : mensagem;
+            mensagem = mensagem.Length > 1500 ? mensagem.Substring(0, 1500) : mensagem;
+
             throw new System.Exception(mensagem);
         }
     }
