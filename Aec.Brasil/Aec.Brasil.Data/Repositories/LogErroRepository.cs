@@ -23,7 +23,15 @@ namespace Aec.Brasil.Data.Repositories
             using (var connection = new SqlConnection(_context.Database.GetDbConnection().ConnectionString))
             {
                 connection.Open();
-                var logs = connection.Query<LogErro>("SELECT * FROM AecBrasil.LogErro(NOLOCK) ORDER BY Timestamp DESC");
+                var logs = connection.Query<LogErro>(@"
+                    SELECT 
+                        IdLogErro AS Id,
+                        Message,
+                        Detail,
+                        StackTrace,
+                        Timestamp
+                    FROM AecBrasil.LogErro(NOLOCK)
+                    ORDER BY Timestamp DESC");
                 return logs.ToList();
             }
         }
