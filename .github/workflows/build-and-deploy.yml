@@ -99,7 +99,7 @@ jobs:
             --network $(echo $NETWORK_NAME) \
             -e "SA_PASSWORD=$DB_PASSWORD" \
             -e "ACCEPT_EULA=Y" \
-            $(echo $IMAGE_NAME_DB) --port 5022          
+            $(echo $IMAGE_NAME_DB)         
             # Wait for the SQL Server to start
             sleep 30            
             # Create database
