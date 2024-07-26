@@ -79,29 +79,29 @@ jobs:
 
             # Stop old containers
             docker stop $(echo $CONTAINER_NAME_API)
-            docker stop $(echo $CONTAINER_NAME_DB)
+            # docker stop $(echo $CONTAINER_NAME_DB)
             
             # Remove old containers
             docker rm $(echo $CONTAINER_NAME_API)
-            docker rm $(echo $CONTAINER_NAME_DB)
+            # docker rm $(echo $CONTAINER_NAME_DB)
             
             # Network recreation
             docker network rm $(echo $NETWORK_NAME)
             docker network create $(echo $NETWORK_NAME)
             
-            # Run new container DB
-            docker run -dt -p 5022:1433 \
-            --restart always \
-            --hostname $(echo $DB_HOSTNAME) \
-            --name $(echo $CONTAINER_NAME_DB) \
-            --network $(echo $NETWORK_NAME) \
-            -e "SA_PASSWORD=$DB_PASSWORD" \
-            -e "ACCEPT_EULA=Y" \
-            $(echo $IMAGE_NAME_DB)         
-            # Wait for the SQL Server to start
-            sleep 30            
-            # Create database
-            docker exec -i $CONTAINER_NAME_DB /opt/mssql-tools/bin/sqlcmd -S localhost -U $DB_USER -P $DB_PASSWORD -Q "CREATE DATABASE [$DB_NAME];"
+            # # Run new container DB
+            # docker run -dt -p 5022:1433 \
+            # --restart always \
+            # --hostname $(echo $DB_HOSTNAME) \
+            # --name $(echo $CONTAINER_NAME_DB) \
+            # --network $(echo $NETWORK_NAME) \
+            # -e "SA_PASSWORD=$DB_PASSWORD" \
+            # -e "ACCEPT_EULA=Y" \
+            # $(echo $IMAGE_NAME_DB)         
+            # # Wait for the SQL Server to start
+            # sleep 30            
+            # # Create database
+            # docker exec -i $CONTAINER_NAME_DB /opt/mssql-tools/bin/sqlcmd -S localhost -U $DB_USER -P $DB_PASSWORD -Q "CREATE DATABASE [$DB_NAME];"
             
             # Run new container API
             docker run -dt -p 5020:8080 \
