@@ -42,8 +42,9 @@ namespace Aec.Brasil.Api.V1.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post([FromBody] string mensagem)
         {
+            const int TAMANHO_MAXIMO = 50;
             mensagem = string.IsNullOrWhiteSpace(mensagem) ? string.Empty : mensagem;
-            mensagem = mensagem.Length > 1500 ? mensagem.Substring(0, 1500) : mensagem;
+            mensagem = mensagem.Length > TAMANHO_MAXIMO ? mensagem.Substring(0, TAMANHO_MAXIMO) : mensagem;
 
             throw new System.Exception(mensagem);
         }
