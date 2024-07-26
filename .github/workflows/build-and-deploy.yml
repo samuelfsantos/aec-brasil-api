@@ -93,8 +93,7 @@ jobs:
             docker network create $(echo $NETWORK_NAME)
             
             # Run new container DB
-            #docker run -dt -p 5022:1433 \
-            docker run -dt -p 5022:5022 \
+            docker run -dt -p 5022:1433 \
             --restart always \
             --name $(echo $CONTAINER_NAME_DB) \
             --network $(echo $NETWORK_NAME) \
