@@ -17,8 +17,9 @@ namespace Aec.Brasil.Tests.WorkingData
 			{
                 CidadeWorkingData.Create();
 				ClimaWorkingData.Create();
+                AeroportoWorkingData.Create();
 
-				executou = true;
+                executou = true;
 			}
 		}
 	}
