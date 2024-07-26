@@ -14,7 +14,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://*:5020
-      #- ConnectionStrings__DefaultConnection="Server=db;Database=AecBrasil;User Id=sa;Password=YourStrong@Passw0rd;"
+      #- ConnectionStrings__DefaultConnection="Server=db-aec;Database=AecBrasil;User Id=sa;Password=YourStrong@Passw0rd;"
     depends_on:
       - db-aec
     command: bash -c "dotnet ef database update && dotnet Aec.Brasil.Api.dll"    
@@ -29,8 +29,6 @@ services:
       - ACCEPT_EULA=Y
     ports:
       - "5022:1433"
-    volumes:
-      - sqlvolume:/var/opt/mssql
       
 networks:
   rede-aec:
