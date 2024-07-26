@@ -36,6 +36,6 @@ app.UseApiConfig(app.Environment);
 var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 app.UseSwagger(provider);
 
-app.ApplyMigrations();
+//app.ApplyMigrations();
 
 app.Run();
