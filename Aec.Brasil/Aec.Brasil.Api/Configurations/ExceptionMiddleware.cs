@@ -26,9 +26,26 @@ namespace Aec.Brasil.Api.Configurations
             }
         }
 
-        private static void HandleExceptionAsync(HttpContext context, Exception exception)
+        //private static void HandleExceptionAsync(HttpContext context, Exception exception)
+        //{
+        //    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        //}
+
+        private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            context.Response.ContentType = "application/json";
+
+            var errorResponse = new
+            {
+                Message = "An unexpected error occurred.",
+                Detail = exception.Message,
+                StackTrace = exception.StackTrace
+            };
+
+            var errorJson = System.Text.Json.JsonSerializer.Serialize(errorResponse);
+
+            await context.Response.WriteAsync(errorJson);
         }
     }
 }

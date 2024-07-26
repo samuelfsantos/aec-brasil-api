@@ -26,15 +26,16 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddBrasilApiServiceConfig(builder.Configuration);
 
-
-
-
 var app = builder.Build();
+
+
+
 
 app.UseApiConfig(app.Environment);
 
 var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 app.UseSwagger(provider);
 
+app.ApplyMigrations();
 
 app.Run();
