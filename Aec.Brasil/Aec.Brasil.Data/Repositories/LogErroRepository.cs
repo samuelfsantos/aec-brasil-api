@@ -29,7 +29,9 @@ namespace Aec.Brasil.Data.Repositories
                         Message,
                         Detail,
                         StackTrace,
-                        Timestamp
+                        Timestamp,
+                        CriadoPor,
+                        CriadoEm
                     FROM AecBrasil.LogErro(NOLOCK)
                     ORDER BY Timestamp DESC");
                 return logs.ToList();
