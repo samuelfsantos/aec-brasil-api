@@ -19,9 +19,6 @@ namespace Aec.Brasil.Domain.Validators.Clima
             RuleFor(a => a.Condicao).MaximumLength(2).WithMessage("O atributo {PropertyName} deve ter no máximo 2 caractéres");
             RuleFor(a => a.CondicaoDesc).NotEmpty().WithMessage("O atributo {PropertyName} é obrigatório");
             RuleFor(a => a.CondicaoDesc).MaximumLength(50).WithMessage("O atributo {PropertyName} deve ter no máximo 50 caractéres");
-            RuleFor(a => a.Min).NotEmpty().WithMessage("O atributo {PropertyName} é obrigatório");
-            RuleFor(a => a.Max).NotEmpty().WithMessage("O atributo {PropertyName} é obrigatório");
-            RuleFor(a => a.IndiceUV).NotEmpty().WithMessage("O atributo {PropertyName} é obrigatório");
 
             RuleFor(a => a.IdCidade).NotEqual(Guid.Empty).WithMessage("O atributo {PropertyName} é obrigatório");
         }
